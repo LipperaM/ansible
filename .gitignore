@@ -1,5 +1,6 @@
 # Ignore Python venv
 .venv/
+venv-instructions.md
 
 # Ignore local .env files
 .env
@@ -10,3 +11,4 @@ README-SIMPLE.md
 
 # Ignore secrets files
 secrets/
+
