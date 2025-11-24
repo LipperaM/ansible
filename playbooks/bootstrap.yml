@@ -1,6 +1,6 @@
 ---
 # Playbook Bootstrap - Runs with ROOT the first time 
-# Command: ansible-playbook playbooks/bootstrap.yml -u root -k
+# Command: ansible-playbook playbooks/bootstrap.yml -u root -k --ask-vault-pass
 # -k is for root password input 
 
 - name: Bootstrap first run 

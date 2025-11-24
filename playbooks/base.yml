@@ -1,6 +1,6 @@
 ---
 # Playbook Base - Execs with admin user (after bootstrap)
-# Command: ansible-playbook playbooks/base.yml -u admin
+# Command: ansible-playbook playbooks/base.yml -u admin --ask-vault-pass
 
 - name: Server bare settings  
   hosts: homelab
