@@ -12,12 +12,16 @@
 ```
 
 
-# Interact with Ansible
+# Interact with Ansible with root password
 
 ```
-  ansible-playbook playbooks/site.yml -i inventory/hosts.ini --ask-vault-pass
-  ansible-vault edit vault.yml
-  ansible-vault create vault.yml
+  ansible-playbook playbooks/bootstrap.yml -k -v
+```
+
+# Interact with Ansible with admin user
+
+```
+  ansible-playbook playbooks/some-playbook.yml  
 ```
 
 # Close venv

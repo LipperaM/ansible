@@ -1,0 +1,30 @@
+---
+# Playbook Base - Execs with admin user (after bootstrap)
+# Command: ansible-playbook playbooks/base.yml -u admin
+
+- name: Server bare settings  
+  hosts: homelab
+  vars_files:
+    - ../secrets/homelab_secrets.yml
+  remote_user: admin  
+  become: yes         # Sudo when necessary
+  gather_facts: yes
+  
+  roles:
+    - auto_updates
+    - docker
+  
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        
+    - name: Install useful packages
+      apt:
+        name:
+          - htop
+          - vim
+          - curl
+          - git
+        state: present

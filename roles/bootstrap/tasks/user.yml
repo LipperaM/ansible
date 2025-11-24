@@ -1,0 +1,38 @@
+---
+# Creating admin user with sudo tasks
+
+- name: Create admin group
+  group:
+    name: "{{ admin_user }}"
+    state: present
+
+- name: Create admin user
+  user:
+    name: "{{ admin_user }}"
+    group: "{{ admin_user }}"
+    groups: sudo
+    shell: /bin/bash
+    create_home: yes
+    state: present
+
+- name: Set sudo for admin user without password 
+  lineinfile:
+    path: /etc/sudoers.d/{{ admin_user }}
+    line: "{{ admin_user }} ALL=(ALL) NOPASSWD:ALL"
+    create: yes
+    mode: '0440'
+    validate: 'visudo -cf %s'
+
+- name: Create .ssh directory for admin user 
+  file:
+    path: /home/{{ admin_user }}/.ssh
+    state: directory
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user }}"
+    mode: '0700'
+
+- name: Copy authorized SSH key 
+  authorized_key:
+    user: "{{ admin_user }}"
+    key: "{{ admin_ssh_key }}"
+    state: present

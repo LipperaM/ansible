@@ -1,0 +1,45 @@
+---
+# UFW tasks
+# Permit only Tailscale connections
+
+- name: Install UFW
+  apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Set UFW - Deny everything by default (incoming)
+  ufw:
+    state: enabled
+    policy: deny
+    direction: incoming
+
+- name: Set UFW - Allow everything by default (outgoing)
+  ufw:
+    state: enabled
+    policy: allow
+    direction: outgoing
+
+- name: Enable SSH only across Tailscale (tailscale0)
+  ufw:
+    rule: allow
+    port: "{{ ssh_port }}"
+    proto: tcp
+    interface: tailscale0
+    direction: in
+
+- name: Enable Tailscale UDP port (for initial handshake)
+  ufw:
+    rule: allow
+    port: "41641"
+    proto: udp
+
+- name: Allow any traffic inside Tailscale 
+  ufw:
+    rule: allow
+    interface: tailscale0
+    direction: in
+
+- name: Enable UFW
+  ufw:
+    state: enabled

@@ -1,0 +1,7 @@
+---
+# Runs only in case of changes and at the end of tasks
+
+- name: restart sshd
+  systemd:
+    name: sshd
+    state: restarted

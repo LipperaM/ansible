@@ -1,0 +1,19 @@
+---
+# Main bootstrap role task 
+# IMPORTANT: Tailscale before firewall to avoid losing access 
+
+- name: Include user creationg tasks 
+  include_tasks: user.yml
+
+- name: Include Tailscale tasks (before firewall)
+  include_tasks: tailscale.yml
+
+- name: Include firewall tasks (after Tailscale)
+  include_tasks: firewall.yml
+
+- name: Include SSH hardening tasks
+  include_tasks: ssh_hardening.yml
+
+- name: Final message
+  debug:
+    msg: "Bootstrap completed! Now you can log in with user: {{ admin_user }} only using Tailscale"

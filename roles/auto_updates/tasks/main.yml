@@ -1,0 +1,53 @@
+---
+# Role for automated security updates
+
+- name: Install unattended-upgrades
+  apt:
+    name:
+      - unattended-upgrades
+      - apt-listchanges
+    state: present
+    update_cache: yes
+
+- name: Set automated security updates 
+  copy:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    content: |
+      // Security updates only 
+      Unattended-Upgrade::Allowed-Origins {
+          "${distro_id}:${distro_codename}-security";
+      };
+      
+      // Clean unused packages 
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+      Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+      
+      // Disable automatic system reboot
+      Unattended-Upgrade::Automatic-Reboot "false";
+      
+      // Fix interrupted last update 
+      Unattended-Upgrade::AutoFixInterruptedDpkg "true";
+    mode: '0644'
+
+- name: Enable automatic updates
+  copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      // Update package list every day
+      APT::Periodic::Update-Package-Lists "1";
+      
+      // Download security updates automatically 
+      APT::Periodic::Download-Upgradeable-Packages "1";
+      
+      // Install security updates automatically 
+      APT::Periodic::Unattended-Upgrade "1";
+      
+      // Clean cache every 7 days 
+      APT::Periodic::AutocleanInterval "7";
+    mode: '0644'
+
+- name: Verify if service is running 
+  systemd:
+    name: unattended-upgrades
+    enabled: yes
+    state: started

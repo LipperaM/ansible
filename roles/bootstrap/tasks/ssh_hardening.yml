@@ -1,0 +1,30 @@
+---
+# SSH hardening tasks
+
+- name: Set SSH - Disable root login 
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin {{ ssh_permit_root_login }}'
+    state: present
+  notify: restart sshd
+
+- name: Set SSH - Disable password authentication 
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication {{ ssh_password_authentication }}'
+    state: present
+  notify: restart sshd
+
+- name: Set SSH - Only allow public keys 
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PubkeyAuthentication'
+    line: 'PubkeyAuthentication yes'
+    state: present
+  notify: restart sshd
+
+# Restart SSH using handler (only if something changed)
+- name: Flush handlers (restart SSH)
+  meta: flush_handlers

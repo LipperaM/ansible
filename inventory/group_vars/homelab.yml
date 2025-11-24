@@ -1,0 +1,14 @@
+---
+# Common variables for all homelab hosts
+
+# Admin user to be created 
+admin_user: admin
+admin_ssh_key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"  # Local public SSH key
+
+# Tailscale
+tailscale_auth_key: "{{ tailscale_auth_key }}"
+
+# SSH rules 
+ssh_port: 22
+ssh_permit_root_login: "no"
+ssh_password_authentication: "no"

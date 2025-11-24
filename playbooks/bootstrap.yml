@@ -1,0 +1,14 @@
+---
+# Playbook Bootstrap - Runs with ROOT the first time 
+# Command: ansible-playbook playbooks/bootstrap.yml -u root -k
+# -k is for root password input 
+
+- name: Bootstrap first run 
+  hosts: homelab
+  vars_files:
+    - ../secrets/homelab_secrets.yml
+  remote_user: root 
+  gather_facts: yes
+  
+  roles:
+    - bootstrap
